@@ -13,6 +13,22 @@ module "cint_clean_bucket" {
   bucket_name = "cint_clean_bucket"
 }
 
+resource "google_artifact_registry_repository" "cint-repo" {
+  repository_id = "cint-repo"
+  format        = "DOCKER"
+}
+
+resource "google_artifact_registry_repository_iam_binding" "cint-repo-binding" {
+  location   = google_artifact_registry_repository.cint-repo.location
+  repository = google_artifact_registry_repository.cint-repo.name
+  role       = "roles/artifactregistry.admin"
+  members = [
+    "user:sally.erisman@ingka.ikea.com",
+    "user:zack.fitz-gibbon.jeppesen1@ingka.ikea.com",
+    "user:michelle.giraud@ingka.ikea.com",
+  ]
+}
+
 //Creates a Cloud Run service
 resource "google_cloud_run_v2_service" "cint-cloud-run" {
   name     = "cint-cloud-run"
