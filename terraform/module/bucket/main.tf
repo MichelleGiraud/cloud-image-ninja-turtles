@@ -5,3 +5,7 @@ resource "google_storage_bucket" "bucket" {
 
   # public_access_prevention = "enforced"
 }
+
+output "bucket_name" {   
+    value = google_storage_bucket.bucket.name 
+}

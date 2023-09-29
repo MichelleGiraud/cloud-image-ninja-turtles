@@ -1,1 +1,1 @@
-{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"cint_upload_bucket","Source":"./module/bucket","Dir":"module/bucket"}]}
+{"Modules":[{"Key":"","Source":"","Dir":"."},{"Key":"cint_clean_bucket","Source":"./module/bucket","Dir":"module/bucket"},{"Key":"cint_upload_bucket","Source":"./module/bucket","Dir":"module/bucket"}]}
