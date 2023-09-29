@@ -34,14 +34,14 @@ resource "google_pubsub_topic" "cint_topic" {
 
 //Right now has a lot of permissions maybe look into roles/pubsub.topic.____ instead of admin
 resource "google_pubsub_topic_iam_binding" "binding" {
-  topic = google_pubsub_topic.cint_topic.name
-  role = "roles/pubsub.admin"
+  topic   = google_pubsub_topic.cint_topic.name
+  role    = "roles/pubsub.admin"
   members = ["serviceAccount:${google_service_account.cint_sa.email}"]
 }
 
 //Creates pub/sub subcripition "cint_subscription" TO-DO
 resource "google_pubsub_subscription" "cint_subscription" {
-  name = "cint_subscription"
+  name  = "cint_subscription"
   topic = "cint_topic"
   push_config {
     push_endpoint = google_cloud_run_v2_service.cint-cloud-run.uri
@@ -71,8 +71,8 @@ resource "google_storage_bucket_iam_binding" "cint_storage_permissions" {
     "bucket1" = module.cint_upload_bucket.bucket_name,
     "bucket2" = module.cint_clean_bucket.bucket_name
   }
-  bucket = each.value
-  role = "roles/storage.admin"
+  bucket  = each.value
+  role    = "roles/storage.admin"
   members = ["serviceAccount:${google_service_account.cint_sa.email}"]
 }
 
@@ -94,6 +94,7 @@ resource "google_project_iam_binding" "project_token_creator" {
 resource "google_storage_notification" "notification" {
   provider       = google-beta
   bucket         = module.cint_upload_bucket.bucket_name
+  event_types    = ["OBJECT_FINALIZE"] # Trigger when a new object is created
   payload_format = "JSON_API_V1"
   topic          = google_pubsub_topic.cint_topic.id
   depends_on     = [google_pubsub_topic_iam_binding.binding]
