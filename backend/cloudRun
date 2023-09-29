@@ -1,0 +1,36 @@
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+	fmt.Print("hej Cint-Team")
+	// ctx := context.Background()
+
+	// // Replace with your Pub/Sub subscription ID
+	// subscriptionID := "cint_subscription"
+
+	// client, err := pubsub.NewClient(ctx, "ingka-native-ikealabs-dev")
+	// if err != nil {
+	// 	log.Fatalf("Failed to create Pub/Sub client: %v", err)
+	// }
+
+	// sub := client.Subscription(subscriptionID)
+
+	// // Receive messages
+	// err = sub.Receive(ctx, func(ctx context.Context, msg *pubsub.Message) {
+	// 	fmt.Printf("Received message: %s\n", msg.Data)
+
+	// 	// Implement your message processing logic here, including ClamAV scanning
+
+	// 	msg.Ack()
+	// 	if err != nil {
+	// 		fmt.Printf("Error acknowledging message: %v\n", err)
+	// 	}
+	// })
+
+	// if err != nil {
+	// 	log.Fatalf("Error receiving messages: %v", err)
+	// }
+}
