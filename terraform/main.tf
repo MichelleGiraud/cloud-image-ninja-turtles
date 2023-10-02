@@ -26,6 +26,7 @@ resource "google_artifact_registry_repository_iam_binding" "cint-repo-binding" {
     "user:sally.erisman@ingka.ikea.com",
     "user:zack.fitz-gibbon.jeppesen1@ingka.ikea.com",
     "user:michelle.giraud@ingka.ikea.com",
+    "user:pernilla.lundahl@ingka.ikea.com",
   ]
 }
 
@@ -35,11 +36,11 @@ resource "google_cloud_run_v2_service" "cint-cloud-run" {
   location = var.location
   template {
     containers {
-      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      image = "europe-west1-docker.pkg.dev/ingka-native-ikealabs-dev/cint-repo/cint-my-docker-image:latest"
     }
     service_account = google_service_account.cint_sa.email
+    }
   }
-}
 
 //PubSub
 
@@ -92,7 +93,7 @@ resource "google_storage_bucket_iam_binding" "cint_storage_permissions" {
   members = ["serviceAccount:${google_service_account.cint_sa.email}"]
 }
 
-resource "google_project_service_identity" "pubsub_agent" {
+resource "google_project_service_identity" "cint_pubsub_agent" {
   provider = google-beta
   project  = var.project_name
   service  = "pubsub.googleapis.com"
@@ -101,7 +102,9 @@ resource "google_project_service_identity" "pubsub_agent" {
 resource "google_project_iam_binding" "project_token_creator" {
   project = var.project_name
   role    = "roles/iam.serviceAccountTokenCreator"
-  members = ["serviceAccount:${google_project_service_identity.pubsub_agent.email}"]
+  members = ["serviceAccount:${google_project_service_identity.cint_pubsub_agent.email}",
+    "serviceAccount:ewtsa1-hackdays@ingka-native-ikealabs-dev.iam.gserviceaccount.com",
+  "serviceAccount:sa-creator@ingka-native-ikealabs-dev.iam.gserviceaccount.com", ]
 }
 
 //PubSub notification

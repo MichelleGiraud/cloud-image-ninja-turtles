@@ -14,7 +14,8 @@ RUN npm install
 COPY . .
 
 # Expose the port your application will run on
-EXPOSE 8080
+ENV PORT=8080
+# EXPOSE 8080
 
 # Define the command to start your application
 CMD ["node", "cloudRunN.js"]
