@@ -39,8 +39,12 @@ resource "google_cloud_run_v2_service" "cint-cloud-run" {
       image = "europe-west1-docker.pkg.dev/ingka-native-ikealabs-dev/cint-repo/cint-my-docker-image:latest"
     }
     service_account = google_service_account.cint_sa.email
-    }
+    //environment_variables = {
+    //AUTH_API_KEY = "AIzaSyA0m2e3o7WP73TAFIA9UPDLjDORlzhR4HE"
+    //}
   }
+}
+
 
 //PubSub
 
@@ -79,7 +83,7 @@ resource "google_service_account" "cint_sa" {
 resource "google_cloud_run_service_iam_binding" "binding" {
   location = google_cloud_run_v2_service.cint-cloud-run.location
   service  = google_cloud_run_v2_service.cint-cloud-run.name
-  role     = "roles/run.invoker"
+  role     = "roles/run.admin"
   members  = ["serviceAccount:${google_service_account.cint_sa.email}"]
 }
 
@@ -103,7 +107,7 @@ resource "google_project_iam_binding" "project_token_creator" {
   project = var.project_name
   role    = "roles/iam.serviceAccountTokenCreator"
   members = ["serviceAccount:${google_project_service_identity.cint_pubsub_agent.email}",
-    "serviceAccount:ewtsa1-hackdays@ingka-native-ikealabs-dev.iam.gserviceaccount.com",
+    "serviceAccount:${google_service_account.cint_sa.email}",
   "serviceAccount:sa-creator@ingka-native-ikealabs-dev.iam.gserviceaccount.com", ]
 }
 
